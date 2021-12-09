@@ -1,13 +1,22 @@
 package backup
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"log"
+	"os"
 	"os/exec"
 	"ukaska/config"
 )
 
-func BackupMongo() (backupFilesNames []string) {
+type BackedUpFile struct {
+	Filename       string
+	DocumentsCount int
+	CollectionName string
+}
+
+func BackupMongo() (backupFilesNames []BackedUpFile) {
 	for i := 0; i < len(config.CollectionNames); i++ {
 		collectionName := config.CollectionNames[i]
 		command, params := getExecutableCommand(collectionName)
@@ -16,9 +25,40 @@ func BackupMongo() (backupFilesNames []string) {
 		output, err := cmd.Output()
 		HandleIfError(err)
 		log.Println(output)
-		backupFilesNames = append(backupFilesNames, fmt.Sprintf("%s.bak", collectionName))
+		filename := fmt.Sprintf("%s.bak", collectionName)
+		stat, _ := os.Stat(filename)
+		file, _ := os.Open(filename)
+		lines, _ := lineCounter(file)
+		file.Close()
+		if stat.Size() > 0 {
+			backupFilesNames = append(backupFilesNames, BackedUpFile{
+				Filename:       filename,
+				DocumentsCount: lines - 1,
+				CollectionName: collectionName,
+			})
+		}
 	}
 	return
+}
+
+// https://stackoverflow.com/questions/24562942/golang-how-do-i-determine-the-number-of-lines-in-a-file-efficiently
+func lineCounter(r io.Reader) (int, error) {
+	buf := make([]byte, 32*1024)
+	count := 0
+	lineSep := []byte{'\n'}
+
+	for {
+		c, err := r.Read(buf)
+		count += bytes.Count(buf[:c], lineSep)
+
+		switch {
+		case err == io.EOF:
+			return count, nil
+
+		case err != nil:
+			return count, err
+		}
+	}
 }
 
 func getExecutableCommand(collectionName string) (command string, params []string) {
