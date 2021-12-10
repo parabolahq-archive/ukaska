@@ -15,7 +15,7 @@ func main() {
 	if len(backupFiles) > 0 {
 		telegram.SendMessage(now)
 		for i := 0; i < len(backupFiles); i++ {
-			telegram.SendMessage(fmt.Sprintf("%s(%d)", backupFiles[i].CollectionName, backupFiles[i].DocumentsCount))
+			telegram.SendMessage(fmt.Sprintf("%s (%d records)", backupFiles[i].CollectionName, backupFiles[i].DocumentsCount))
 			telegram.SendDocument(backupFiles[i].Filename)
 		}
 	}
