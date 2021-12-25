@@ -33,7 +33,7 @@ func BackupMongo() (backupFilesNames []BackedUpFile) {
 		if stat.Size() > 0 {
 			backupFilesNames = append(backupFilesNames, BackedUpFile{
 				Filename:       filename,
-				DocumentsCount: lines - 1,
+				DocumentsCount: lines,
 				CollectionName: collectionName,
 			})
 		}
