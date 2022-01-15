@@ -13,6 +13,6 @@ func SendMessage(text, chatId string, disableNotification bool) string {
 	return baseUrl + "sendMessage?" + url.PathEscape(fmt.Sprintf("text=%s&chat_id=%s&disable_notification=%s", text, chatId, strconv.FormatBool(disableNotification)))
 }
 
-func SendDocument(chatId string) string {
-	return baseUrl + "sendDocument?" + url.PathEscape(fmt.Sprintf("&chat_id=%s", chatId))
+func SendDocument(chatId string, disableNotification bool) string {
+	return baseUrl + "sendDocument?" + url.PathEscape(fmt.Sprintf("chat_id=%s&disable_notification=%s", chatId, strconv.FormatBool(disableNotification)))
 }

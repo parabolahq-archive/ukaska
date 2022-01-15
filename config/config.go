@@ -6,12 +6,12 @@ import (
 )
 
 var (
-	BotToken             = os.Getenv("BOT_TOKEN")
-	DbUrl                = os.Getenv("DB_URL")
-	ChannelId            = os.Getenv("CHANNEL_ID")
-	CollectionNames      = []string{}
+	BotToken            = os.Getenv("BOT_TOKEN")
+	DbUrl               = os.Getenv("DB_URL")
+	ChannelId           = os.Getenv("CHANNEL_ID")
+	CollectionNames     = []string{}
 	DisableNotification = true
-	CollectionsCount     int
+	CollectionsCount    int
 )
 
 func Init() {
