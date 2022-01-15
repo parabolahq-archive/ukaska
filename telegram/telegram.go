@@ -8,6 +8,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
+	"strconv"
 	"ukaska/backup"
 	"ukaska/config"
 	"ukaska/telegram/endpoint"
@@ -29,6 +30,7 @@ func SendDocument(documentName string) structs.MessageResponse {
 	fw, _ := writer.CreateFormFile("document", documentName)
 	file, _ := os.Open(documentName)
 	_, _ = io.Copy(fw, file)
+	writer.WriteField("disableNotifications", strconv.FormatBool(config.DisableNotification))
 	_ = writer.Close()
 	req, err := http.NewRequest("POST", endpoint.SendDocument(config.ChannelId), bytes.NewReader(body.Bytes()))
 	backup.HandleIfError(err)

@@ -50,3 +50,13 @@ docker build -t ukaska .
                                --env COLLECTION_NAMES='${COLLECTION_NAMES}' \
                                ghcr.io/parabolahq/ukaska:main
     ```
+    **or** _(if you want to disable notifications)_
+    ```sh
+    docker run -dp 27017:27017 --env DB_URL=${DB_URL} \
+                               --env JOBBER_STRING='${JOBBER_STRING}' \
+                               --env CHANNEL_ID=${CHANNEL_ID} \
+                               --env BOT_TOKEN=${BOT_TOKEN} \
+                               --env COLLECTION_NAMES='${COLLECTION_NAMES}' \
+                               --env DISABLE_NOTIFICATION='true'
+                               ghcr.io/parabolahq/ukaska:main
+    ```
