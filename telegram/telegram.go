@@ -16,7 +16,7 @@ import (
 )
 
 func SendMessage(messageText string) structs.MessageResponse {
-	uri := endpoint.SendMessage(messageText, config.ChannelId)
+	uri := endpoint.SendMessage(messageText, config.ChannelId, config.DisableNotification)
 	resp, err := http.Get(uri)
 	backup.HandleIfError(err)
 	body, _ := ioutil.ReadAll(resp.Body)
